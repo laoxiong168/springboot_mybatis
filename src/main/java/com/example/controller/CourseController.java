@@ -1,8 +1,9 @@
 package com.example.controller;
 
-import com.example.domain.PersonDO;
-import com.example.mapper.CourseMapper;
-import com.example.service.CourseService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.example.service.CourseService;
 
 /**
  * 
@@ -24,6 +22,29 @@ import java.util.Map;
 public class CourseController {
 	@Autowired
 	private CourseService courseService;
+
+	/**
+	 * git命令行测试
+	 * 
+	 * @param courseName
+	 * @return
+	 */
+	private void mGitUpload() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				int i = 0;
+				try {
+					while (true) {
+						Thread.sleep(2000);
+						System.out.println("定时任务执行次数： " + i++);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
 	@RequestMapping("/selectByCourseName")
 	public List<Map<String, Object>> selectByCourseName(String courseName) {
@@ -40,11 +61,13 @@ public class CourseController {
 		List<Map<String, Object>> resultList = courseService.selectMyAttention(map);
 		return resultList;
 	}
-/**
- * 各种课程
- * @param type
- * @return
- */
+
+	/**
+	 * 各种课程
+	 * 
+	 * @param type
+	 * @return
+	 */
 	@RequestMapping("/selectAll")
 	public List<Map<String, Object>> selectAll(String type) {
 		if (StringUtils.isEmpty(type)) {
@@ -69,7 +92,8 @@ public class CourseController {
 	}
 
 	@RequestMapping("/transaction")
-	@Transactional // 需要事务的时候加上
+	@Transactional
+	// 需要事务的时候加上
 	public Boolean transaction() {
 		return true;
 	}
