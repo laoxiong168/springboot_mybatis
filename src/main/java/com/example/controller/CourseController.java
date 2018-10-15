@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,40 +17,16 @@ import com.example.service.CourseService;
 /**
  * @author xzy
  */
-@RestController
+@Controller
 public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    /**
-     * git命令行测试
-     *
-     * @param
-     * @return
-     */
-    private void mGitUpload() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int i = 0;
-                try {
-                    while (true) {
-                        Thread.sleep(2000);
-                        System.out.println("定时任务执行次数： " + i++);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 
-    @RequestMapping("/test")
+    @RequestMapping(value = {"/", "/view"})
     public String test() {
-        System.out.println("test123");
-        return  "hello";
-
-
+        System.out.println("hello");
+        return "index";
     }
 
     @RequestMapping("/selectByCourseName")
@@ -60,42 +37,6 @@ public class CourseController {
         return resultList;
     }
 
-    @RequestMapping("/selectMyAttention")
-    public List<Map<String, Object>> selectMyAttention(String id) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        List<Map<String, Object>> resultList = courseService.selectMyAttention(map);
-        return resultList;
-    }
-
-    /**
-     * 各种课程
-     *
-     * @param type
-     * @return
-     */
-    @RequestMapping("/selectAll")
-    public List<Map<String, Object>> selectAll(String type) {
-        if (StringUtils.isEmpty(type)) {
-            return null;
-        }
-        List<Map<String, Object>> resultList = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
-        switch (type) {
-            case "1":
-                resultList = courseService.selectAll(map);
-                break;
-            case "2":
-                map.put("hot", "hot");
-                resultList = courseService.selectAll(map);
-                break;
-            case "3":
-                map.put("newest", "newest");
-                resultList = courseService.selectAll(map);
-                break;
-        }
-        return resultList;
-    }
 
     @RequestMapping("/transaction")
     @Transactional
