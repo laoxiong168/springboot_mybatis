@@ -1,10 +1,9 @@
 package com.example.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.example.service.NoteService;
+import org.apache.tomcat.jni.Mmap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,24 @@ import com.example.service.CourseService;
 public class CourseController {
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private NoteService noteService;
 
+
+    @RequestMapping("/ajaxTest")
+    @ResponseBody
+    public Map ajaxTest(String data){
+        System.out.println("接收的值:"+data);
+        Map insertMap=new HashMap();
+//        String id= UUID.randomUUID().toString().replace("-", "").toLowerCase();
+        String id="kkkkk";
+        insertMap.put("id",id);
+        insertMap.put("content",data);
+        Integer insertCount=noteService.insertNote(insertMap);
+        Map tempMap=new HashMap();
+        tempMap.put("success","success");
+        return tempMap;
+    }
 
     @RequestMapping(value = {"/", "/view"})
     public String test() {

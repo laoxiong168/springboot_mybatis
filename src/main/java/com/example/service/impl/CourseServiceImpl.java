@@ -14,7 +14,6 @@ public class CourseServiceImpl implements CourseService{
 	private CourseMapper courseMapper;
 	@Override
 	public List<Map<String, Object>> selectAll(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return courseMapper.selectAll(map);
 	}
 
