@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.CourseService;
@@ -25,9 +26,12 @@ public class CourseController {
 
     @RequestMapping(value = {"/", "/view"})
     public String test() {
-        System.out.println("hello");
+        System.out.println("123hello....");
         return "index";
     }
+
+
+
 
     @RequestMapping("/selectByCourseName")
     public List<Map<String, Object>> selectByCourseName(String courseName) {
