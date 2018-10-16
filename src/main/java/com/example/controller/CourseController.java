@@ -1,18 +1,16 @@
 package com.example.controller;
 
-import java.util.*;
-
+import com.example.service.CourseService;
 import com.example.service.NoteService;
-import org.apache.tomcat.jni.Mmap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.example.service.CourseService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xzy

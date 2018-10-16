@@ -90,7 +90,14 @@
                 }
             })
         }
+
+
+            $("textarea").keyup(function (e) {
+                console.info($(this).val());
+
+            })
     </script>
+
 </div>
 </body>
 </html>
