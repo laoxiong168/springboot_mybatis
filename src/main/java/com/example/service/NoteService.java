@@ -5,5 +5,7 @@ import java.util.Map;
 
 public interface NoteService {
 
-Integer insertNote(Map map);
+    Integer insertNote(Map<String, Object> map);
+
+    List<Map<String, Object>> queryContents();
 }

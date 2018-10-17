@@ -15,6 +15,10 @@
             margin: 0 2%;
         }
 
+        body {
+            font-size: 20px;
+        }
+
         .common_div {
             width: 200px;
             height: 200px;
@@ -40,11 +44,12 @@
         }
 
         .textModule {
-            padding: 0;
-            margin: 0;
+            padding-left: 5px;
+            margin-left: 0;
             height: 200px;
             width: 100%;
-            border: solid 1px;
+            border: solid 1px #d2cdde;
+            outline:none;
             border-radius: 8px;
             resize: none;
         }
@@ -54,27 +59,44 @@
 <div class="main">
     <%--新增木块的div--%>
     <div id="addModule" class="addModudle">
-        <div class="childrenModule">
-            <textarea class="textModule">
-            </textarea>
-            <input id="test" type="button" value="提交" name="test" onclick="ajaxSubmmit(this)">
-        </div>
+        <%--<div class="childrenModule">--%>
+            <%--<textarea class="textModule">--%>
+            <%--</textarea>--%>
+            <%--<input id="submmit" type="button" value="提交" name="test" onclick="ajaxSubmmit(this)">--%>
+            <%--<input id="deleteModule" type="button" value="删除" name="test" onclick="deleteModule(this)">--%>
+        <%--</div>--%>
     </div>
-    <div>
+    <div style="position: fixed;bottom: 2px;right:2px;margin-top: 1px;">
         <input type="button" value="新增" onclick="addModule()"/>
     </div>
 
 
     <script>
-        function addModule() {
+        function addModule(data) {
+            if (data == undefined) {
+                data = "";
+            }
             var tempModule = " <div  class=\"childrenModule\">\n" +
                 "            <textarea class=\"textModule\">\n" +
+                data +
                 "            </textarea>\n" +
-                "            <input id=\"test\" type=\"button\" value=\"提交\" name=\"test\" onclick=\"ajaxSubmmit(this)\">\n" +
+                "            <input id=\"submmit\" type=\"button\" value=\"提交\" name=\"test\" onclick=\"ajaxSubmmit(this)\">\n" +
+                "    <input id=\"deleteModule\" type=\"button\" value=\"删除\" name=\"test\" onclick=\"deleteModule(this)\">" +
                 "        </div>";
             $("#addModule").append(tempModule);
         }
 
+      // 删除模块
+        function deleteModule(obj) {
+            var data="";
+            ajaxTemplet(deleteModule,)
+            $(obj).parent().remove();
+        }
+
+        /**
+         * 向后台提交content数据
+         * @param obj
+         */
         function ajaxSubmmit(obj) {
             var data = $(obj).parent().find("textarea").val();
             $.ajax({
@@ -91,11 +113,43 @@
             })
         }
 
-
-            $("textarea").keyup(function (e) {
-                console.info($(this).val());
-
+        // ajax模板
+        function ajaxTemplet(url,data) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'json',
+                data: {"data": data},
+                success: function (data) {
+                    alert("成功！");
+                },
+                error: function (data) {
+                    alert("error")
+                }
             })
+        }
+
+        /**
+         * 页面加载完毕后获取后台数据至前台展现
+         */
+        $(function () {
+            $.ajax({
+                url: "/getAllContents",
+                type: "get",
+                dataType: "json",
+                data: {},
+                success: function (data) {
+                    $.each(data, function (index, indexContent) {
+                        addModule(indexContent.content);
+                    })
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            })
+        })
+
+
     </script>
 
 </div>

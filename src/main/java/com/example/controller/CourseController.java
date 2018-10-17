@@ -2,15 +2,15 @@ package com.example.controller;
 
 import com.example.service.CourseService;
 import com.example.service.NoteService;
+import com.sun.org.apache.xpath.internal.functions.FuncSubstring;
+import org.apache.ibatis.javassist.tools.reflect.ClassMetaobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author xzy
@@ -23,13 +23,38 @@ public class CourseController {
     private NoteService noteService;
 
 
+    @RequestMapping("/deleteModule")
+    @ResponseBody
+    public Map<String,Object> deleteModule(String data){
+        Map resultMap=new HashMap();
+        if (!"21500".equals(data)){
+            resultMap.put("result","error");
+            return resultMap;
+        }
+        resultMap.put("result","success");
+        return resultMap;
+    }
+
+
+
+    /**
+     * 读取记录列表
+     * @param
+     * @return
+     */
+    @RequestMapping("/getAllContents")
+    @ResponseBody
+    public List<Map<String,Object>>  getAllContents(){
+        List<Map<String,Object>> contentResultList=noteService.queryContents();
+        return contentResultList;
+
+    }
+
     @RequestMapping("/ajaxTest")
     @ResponseBody
     public Map ajaxTest(String data){
-        System.out.println("接收的值:"+data);
-        Map insertMap=new HashMap();
-//        String id= UUID.randomUUID().toString().replace("-", "").toLowerCase();
-        String id="kkkkk";
+        Map<String,Object> insertMap=new HashMap();
+        String id= UUID.randomUUID().toString().replace("-", "").toLowerCase();
         insertMap.put("id",id);
         insertMap.put("content",data);
         Integer insertCount=noteService.insertNote(insertMap);

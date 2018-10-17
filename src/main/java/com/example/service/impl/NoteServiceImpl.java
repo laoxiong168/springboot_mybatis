@@ -13,7 +13,10 @@ public class NoteServiceImpl implements NoteService {
     @Autowired
     NoteMapper noteMapper;
     @Override
-    public Integer insertNote(Map map) {
+    public Integer insertNote(Map<String,Object> map) {
         return noteMapper.insertNote(map);
+    }
+    public  List<Map<String, Object>> queryContents(){
+        return noteMapper.queryContents();
     }
 }

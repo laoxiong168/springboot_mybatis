@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
  * @author xzy
- *
  */
 @Mapper
 public interface NoteMapper {
-//插入记录数据
-Integer insertNote(Map map);
+    //插入记录数据
+    Integer insertNote(Map<String, Object> map);
+
+    List<Map<String, Object>> queryContents();
 }
