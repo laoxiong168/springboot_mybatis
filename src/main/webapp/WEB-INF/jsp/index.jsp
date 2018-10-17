@@ -39,6 +39,7 @@
             background-color: azure;
             margin-top: 4px;
             margin-left: 4px;
+            margin-bottom: 0;
             display: inline-block;
             border-radius: 8px;
         }
@@ -49,22 +50,27 @@
             height: 200px;
             width: 100%;
             border: solid 1px #d2cdde;
-            outline:none;
+            outline: none;
             border-radius: 8px;
             resize: none;
+        }
+
+        input {
+           margin-left: 8px;
         }
     </style>
 </head>
 <body>
 <div class="main">
+    <%--删除输入密码div--%>
+    <div id="passwordDiv" style="display: none;width: 200px;height: 100px;position: fixed;left: 45%;top:35%;background-color: #d2cdde">
+        <input id="password" type="password" placeholder="输入密码" />
+        <input id="passwordConfirm" type="button" value="确定"/>
+        <input id="passwordCancle" type="button" value="取消"/>
+    </div>
     <%--新增木块的div--%>
     <div id="addModule" class="addModudle">
-        <%--<div class="childrenModule">--%>
-            <%--<textarea class="textModule">--%>
-            <%--</textarea>--%>
-            <%--<input id="submmit" type="button" value="提交" name="test" onclick="ajaxSubmmit(this)">--%>
-            <%--<input id="deleteModule" type="button" value="删除" name="test" onclick="deleteModule(this)">--%>
-        <%--</div>--%>
+
     </div>
     <div style="position: fixed;bottom: 2px;right:2px;margin-top: 1px;">
         <input type="button" value="新增" onclick="addModule()"/>
@@ -72,12 +78,12 @@
 
 
     <script>
-        function addModule(data) {
+        function addModule(data, id) {
             if (data == undefined) {
                 data = "";
             }
             var tempModule = " <div  class=\"childrenModule\">\n" +
-                "            <textarea class=\"textModule\">\n" +
+                "            <textarea id='" + id + "' class=\"textModule\">\n" +
                 data +
                 "            </textarea>\n" +
                 "            <input id=\"submmit\" type=\"button\" value=\"提交\" name=\"test\" onclick=\"ajaxSubmmit(this)\">\n" +
@@ -86,11 +92,21 @@
             $("#addModule").append(tempModule);
         }
 
-      // 删除模块
+        // 删除模块
         function deleteModule(obj) {
-            var data="";
-            ajaxTemplet(deleteModule,)
-            $(obj).parent().remove();
+            $("#passwordDiv").show();
+            $("#passwordConfirm").click(function () {
+                var password=    $("#password").val();
+                alert(password);
+                var data = "";
+                ajaxTemplet('deleteModule', 'test');
+                $(obj).parent().remove();
+            });
+            $("#passwordCancle").click(function () {
+                $("#password").val("");
+                $("#passwordDiv").hide();
+            });
+
         }
 
         /**
@@ -99,11 +115,12 @@
          */
         function ajaxSubmmit(obj) {
             var data = $(obj).parent().find("textarea").val();
+            var id=$(obj).parent().find("textarea").attr("id");
             $.ajax({
-                url: 'ajaxTest',
+                url: 'ajaxSubmmit',
                 type: 'get',
                 dataType: 'json',
-                data: {"data": data},
+                data: {"data": data,"id":id},
                 success: function (data) {
                     alert("新增成功！" + data.success);
                 },
@@ -114,7 +131,7 @@
         }
 
         // ajax模板
-        function ajaxTemplet(url,data) {
+        function ajaxTemplet(url, data) {
             $.ajax({
                 url: url,
                 type: 'get',
@@ -124,7 +141,7 @@
                     alert("成功！");
                 },
                 error: function (data) {
-                    alert("error")
+                    alert("心情好的时候再完善这个功能")
                 }
             })
         }
@@ -140,7 +157,7 @@
                 data: {},
                 success: function (data) {
                     $.each(data, function (index, indexContent) {
-                        addModule(indexContent.content);
+                        addModule(indexContent.content, indexContent.id);
                     })
                 },
                 error: function (data) {

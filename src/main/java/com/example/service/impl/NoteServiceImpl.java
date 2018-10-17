@@ -19,4 +19,14 @@ public class NoteServiceImpl implements NoteService {
     public  List<Map<String, Object>> queryContents(){
         return noteMapper.queryContents();
     }
+
+    @Override
+    public Integer selectContent(String id) {
+        return noteMapper.selectContent(id);
+    }
+
+    @Override
+    public Integer updateContent(Map<String, Object> map) {
+        return noteMapper.updateContent(map);
+    }
 }

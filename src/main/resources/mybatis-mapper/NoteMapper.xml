@@ -9,9 +9,9 @@
 		INSERT INTO sys_notes(id,content,handle_date) VALUES(#{id},#{content},now())
 	</insert>
 
-	<update id="update" parameterType="PersonDO">
-		UPDATE person SET
-		name=#{name},age=#{age} WHERE id=#{id}
+	<update id="updateContent" >
+		UPDATE sys_notes SET
+		content=#{content} WHERE id=#{id}
 	</update>
 
 	<delete id="delete" parameterType="java.lang.Long">
@@ -24,15 +24,9 @@
 		sys_notes order by handle_date desc
 	</select>
 
-	<select id="selectAll" resultType="map">
-		SELECT * from
-		sys_course_detail
-		<if test="newest != null">
-			order by course_date desc limit 15
-		</if>
-		<if test="hot != null">
-			order by course_braise desc limit 15
-		</if>
+	<select id="selectContent" resultType="int">
+		SELECT count(*) from
+		sys_notes where id=#{id}
 	</select>
 	<select id="selectByCourseName" resultType="map">
 		SELECT * from

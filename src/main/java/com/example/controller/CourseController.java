@@ -50,14 +50,20 @@ public class CourseController {
 
     }
 
-    @RequestMapping("/ajaxTest")
+    @RequestMapping("/ajaxSubmmit")
     @ResponseBody
-    public Map ajaxTest(String data){
+    public Map ajaxSubmmit(String data,String id){
         Map<String,Object> insertMap=new HashMap();
-        String id= UUID.randomUUID().toString().replace("-", "").toLowerCase();
-        insertMap.put("id",id);
+        Integer idExistCoutn=noteService.selectContent(id);
         insertMap.put("content",data);
-        Integer insertCount=noteService.insertNote(insertMap);
+        if(idExistCoutn>0){
+            insertMap.put("id",id);
+            noteService.updateContent(insertMap);
+        }else {
+            String uuid= UUID.randomUUID().toString().replace("-", "").toLowerCase();
+            insertMap.put("id",uuid);
+            Integer insertCount=noteService.insertNote(insertMap);
+        }
         Map tempMap=new HashMap();
         tempMap.put("success","success");
         return tempMap;
@@ -65,7 +71,7 @@ public class CourseController {
 
     @RequestMapping(value = {"/", "/view"})
     public String test() {
-        System.out.println("123hello....");
+
         return "index";
     }
 
