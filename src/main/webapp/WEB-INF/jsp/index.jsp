@@ -56,21 +56,21 @@
         }
 
         input {
-           margin-left: 8px;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
 <div class="main">
     <%--删除输入密码div--%>
-    <div id="passwordDiv" style="display: none;width: 200px;height: 100px;position: fixed;left: 45%;top:35%;background-color: #d2cdde">
-        <input id="password" type="password" placeholder="输入密码" />
+    <div id="passwordDiv"
+         style="display: none;width: 200px;height: 100px;position: fixed;left: 45%;top:35%;background-color: #d2cdde">
+        <input id="password" type="password" placeholder="输入密码"/>
         <input id="passwordConfirm" type="button" value="确定"/>
         <input id="passwordCancle" type="button" value="取消"/>
     </div>
     <%--新增木块的div--%>
     <div id="addModule" class="addModudle">
-
     </div>
     <div style="position: fixed;bottom: 2px;right:2px;margin-top: 1px;">
         <input type="button" value="新增" onclick="addModule()"/>
@@ -82,7 +82,7 @@
             if (data == undefined) {
                 data = "";
             }
-            var tempModule = " <div  class=\"childrenModule\">\n" +
+            var tempModule = " <div  id=\"childrenModule\" class=\"childrenModule\">\n" +
                 "            <textarea id='" + id + "' class=\"textModule\">\n" +
                 data +
                 "            </textarea>\n" +
@@ -96,7 +96,7 @@
         function deleteModule(obj) {
             $("#passwordDiv").show();
             $("#passwordConfirm").click(function () {
-                var password=    $("#password").val();
+                var password = $("#password").val();
                 alert(password);
                 var data = "";
                 ajaxTemplet('deleteModule', 'test');
@@ -115,12 +115,12 @@
          */
         function ajaxSubmmit(obj) {
             var data = $(obj).parent().find("textarea").val();
-            var id=$(obj).parent().find("textarea").attr("id");
+            var id = $(obj).parent().find("textarea").attr("id");
             $.ajax({
                 url: 'ajaxSubmmit',
                 type: 'get',
                 dataType: 'json',
-                data: {"data": data,"id":id},
+                data: {"data": data, "id": id},
                 success: function (data) {
                     alert("新增成功！" + data.success);
                 },
@@ -156,15 +156,48 @@
                 dataType: "json",
                 data: {},
                 success: function (data) {
+                    var mobile_flag = isMobile();
                     $.each(data, function (index, indexContent) {
                         addModule(indexContent.content, indexContent.id);
+                        if(mobile_flag){
+                            $(".childrenModule").css("width", "98.2%");
+                        }
                     })
                 },
                 error: function (data) {
                     alert("error");
                 }
-            })
+            });
+
         })
+
+
+        //判断浏览器是否是手机
+        function isMobile() {
+            var userAgentInfo = navigator.userAgent;
+
+            var mobileAgents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+
+            var mobile_flag = false;
+
+            //根据userAgent判断是否是手机
+            for (var v = 0; v < mobileAgents.length; v++) {
+                if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                    mobile_flag = true;
+                    break;
+                }
+            }
+
+            var screen_width = window.screen.width;
+            var screen_height = window.screen.height;
+
+            //根据屏幕分辨率判断是否是手机
+            if (screen_width < 500 && screen_height < 800) {
+                mobile_flag = true;
+            }
+
+            return mobile_flag;
+        }
 
 
     </script>
