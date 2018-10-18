@@ -19,4 +19,6 @@ public interface NoteMapper {
     Integer selectContent(String id);
 
     Integer updateContent(Map<String, Object> map);
+
+    Integer deleteNote(String id);
 }

@@ -13,5 +13,7 @@ public interface NoteService {
 
     Integer updateContent(Map<String, Object> map);
 
+    Integer deleteNote(String id);
+
 
 }

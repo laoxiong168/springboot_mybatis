@@ -25,12 +25,13 @@ public class CourseController {
 
     @RequestMapping("/deleteModule")
     @ResponseBody
-    public Map<String,Object> deleteModule(String data){
+    public Map<String,Object> deleteModule(String data,String id){
         Map resultMap=new HashMap();
         if (!"21500".equals(data)){
             resultMap.put("result","error");
             return resultMap;
         }
+        int deleteResult=noteService.deleteNote(id);
         resultMap.put("result","success");
         return resultMap;
     }

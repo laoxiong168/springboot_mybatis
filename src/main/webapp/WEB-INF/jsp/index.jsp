@@ -64,7 +64,7 @@
 <div class="main">
     <%--删除输入密码div--%>
     <div id="passwordDiv"
-         style="display: none;width: 200px;height: 100px;position: fixed;left: 45%;top:35%;background-color: #d2cdde">
+         style="border-radius: 5px; display: none;width: 200px;height: 100px;position: fixed;left: 45%;top:35%;background-color: #d2cdde">
         <input id="password" type="password" placeholder="输入密码"/>
         <input id="passwordConfirm" type="button" value="确定"/>
         <input id="passwordCancle" type="button" value="取消"/>
@@ -73,11 +73,16 @@
     <div id="addModule" class="addModudle">
     </div>
     <div style="position: fixed;bottom: 2px;right:2px;margin-top: 1px;">
-        <input type="button" value="新增" onclick="addModule()"/>
+        <input type="button" value="新增" onclick="add()"/>
     </div>
 
 
     <script>
+        <%--新增模块并滚动到页面底部--%>
+        function add() {
+            addModule();
+            scrollToEnd();
+        }
         function addModule(data, id) {
             if (data == undefined) {
                 data = "";
@@ -92,21 +97,13 @@
             $("#addModule").append(tempModule);
         }
 
+        //全局变量 删除指定textarea需要用到的id
+        var id = "";
+
         // 删除模块
         function deleteModule(obj) {
+            id = $(obj).parent().find('textarea').attr('id');
             $("#passwordDiv").show();
-            $("#passwordConfirm").click(function () {
-                var password = $("#password").val();
-                alert(password);
-                var data = "";
-                ajaxTemplet('deleteModule', 'test');
-                $(obj).parent().remove();
-            });
-            $("#passwordCancle").click(function () {
-                $("#password").val("");
-                $("#passwordDiv").hide();
-            });
-
         }
 
         /**
@@ -122,7 +119,7 @@
                 dataType: 'json',
                 data: {"data": data, "id": id},
                 success: function (data) {
-                    alert("新增成功！" + data.success);
+                    alert("新增成功！");
                 },
                 error: function (data) {
                     alert("error")
@@ -131,14 +128,19 @@
         }
 
         // ajax模板
-        function ajaxTemplet(url, data) {
+        function ajaxTemplet(url, data, id) {
             $.ajax({
                 url: url,
                 type: 'get',
                 dataType: 'json',
-                data: {"data": data},
+                data: {"data": data, "id": id},
                 success: function (data) {
-                    alert("成功！");
+                    if (data.result == "success") {
+                        $("#passwordDiv").hide();
+                        $("#" + id).parent().remove();
+                    }
+                    $("#password").val("");
+                    alert(data.result);
                 },
                 error: function (data) {
                     alert("心情好的时候再完善这个功能")
@@ -159,7 +161,7 @@
                     var mobile_flag = isMobile();
                     $.each(data, function (index, indexContent) {
                         addModule(indexContent.content, indexContent.id);
-                        if(mobile_flag){
+                        if (mobile_flag) {
                             $(".childrenModule").css("width", "98.2%");
                         }
                     })
@@ -197,6 +199,24 @@
             }
 
             return mobile_flag;
+        }
+
+
+        //监听删除弹框的确定和取消按钮
+        $("#passwordConfirm").click(function () {
+            var password = $("#password").val();
+            ajaxTemplet('deleteModule', password, id);
+            $(obj).parent().remove();
+        });
+        $("#passwordCancle").click(function () {
+            $("#password").val("");
+            $("#passwordDiv").hide();
+        });
+
+        //页面滚动到底部
+        function scrollToEnd() {
+            var h = $(document).height() - $(window).height();
+            $(document).scrollTop(h);
         }
 
 

@@ -14,8 +14,8 @@
 		content=#{content} WHERE id=#{id}
 	</update>
 
-	<delete id="delete" parameterType="java.lang.Long">
-		DELETE FROM person WHERE
+	<delete id="deleteNote" >
+		DELETE FROM sys_notes WHERE
 		id=#{id}
 	</delete>
 

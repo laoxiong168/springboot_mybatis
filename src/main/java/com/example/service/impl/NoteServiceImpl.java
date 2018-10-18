@@ -29,4 +29,9 @@ public class NoteServiceImpl implements NoteService {
     public Integer updateContent(Map<String, Object> map) {
         return noteMapper.updateContent(map);
     }
+
+    @Override
+    public Integer deleteNote(String id) {
+        return noteMapper.deleteNote(id);
+    }
 }
