@@ -14,25 +14,17 @@
         .main {
             margin: 0 2%;
         }
-
-        body {
-            font-size: 20px;
-        }
-
         .common_div {
             width: 200px;
             height: 200px;
             background-color: antiquewhite;
         }
-
         .inline_div {
             display: inline-block;
         }
-
         .addModudle {
             height: 400px;
         }
-
         .childrenModule {
             height: 200px;
             width: 49%;
@@ -88,9 +80,7 @@
                 data = "";
             }
             var tempModule = " <div  id=\"childrenModule\" class=\"childrenModule\">\n" +
-                "            <textarea id='" + id + "' class=\"textModule\">\n" +
-                data +
-                "            </textarea>\n" +
+                "<textarea id='" + id + "' class=\"textModule\">"+data +"</textarea>\n" +
                 "            <input id=\"submmit\" type=\"button\" value=\"提交\" name=\"test\" onclick=\"ajaxSubmmit(this)\">\n" +
                 "    <input id=\"deleteModule\" type=\"button\" value=\"删除\" name=\"test\" onclick=\"deleteModule(this)\">" +
                 "        </div>";
@@ -115,7 +105,7 @@
             var id = $(obj).parent().find("textarea").attr("id");
             $.ajax({
                 url: 'ajaxSubmmit',
-                type: 'get',
+                type: 'post',
                 dataType: 'json',
                 data: {"data": data, "id": id},
                 success: function (data) {
