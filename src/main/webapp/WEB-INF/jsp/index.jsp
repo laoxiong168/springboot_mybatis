@@ -18,7 +18,7 @@
 <body>
 <div class="m">
     <div id="div1" class="summernote"></div>
-    <input id="btn" type="button" value="submmit" />
+    <input id="btn" type="button" value="提交" style="position: fixed;bottom: 10px;right: 10px;"  />
 </div>
 <div class="main">
     <%--Tip提示框--%>
@@ -70,7 +70,7 @@
          */
         $(function () {
             $('.summernote').summernote({
-                height:300,
+                height:600,
                 tabsize: 2,
                 lang: 'zh-CN'
             });
