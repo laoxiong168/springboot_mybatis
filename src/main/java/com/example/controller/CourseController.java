@@ -23,6 +23,20 @@ public class CourseController {
     private NoteService noteService;
 
 
+
+    @RequestMapping("/getInitiData")
+    @ResponseBody
+    public Map<String,Object> getInitiData(){
+        Map<String,Object> resultMap=new HashMap<>();
+        try{
+        }catch (Exception e){
+            e.printStackTrace();
+            resultMap.put("result","操作数据库失败");
+    }
+        return resultMap;
+    }
+
+
     @RequestMapping("/deleteModule")
     @ResponseBody
     public Map<String,Object> deleteModule(String data,String id){
@@ -36,8 +50,6 @@ public class CourseController {
         return resultMap;
     }
 
-
-
     /**
      * 读取记录列表
      * @param
@@ -48,16 +60,15 @@ public class CourseController {
     public List<Map<String,Object>>  getAllContents(){
         List<Map<String,Object>> contentResultList=noteService.queryContents();
         return contentResultList;
-
     }
 
-    @RequestMapping("/ajaxSubmmit")
+    @RequestMapping("/addContent")
     @ResponseBody
-    public Map ajaxSubmmit(String data,String id){
+    public Map addContent(String data,String id){
         Map<String,Object> insertMap=new HashMap();
-        Integer idExistCoutn=noteService.selectContent(id);
+        Integer idExistCount=noteService.selectContent(id);
         insertMap.put("content",data);
-        if(idExistCoutn>0){
+        if(idExistCount>0){
             insertMap.put("id",id);
             noteService.updateContent(insertMap);
         }else {
@@ -71,13 +82,9 @@ public class CourseController {
     }
 
     @RequestMapping(value = {"/", "/view"})
-    public String test() {
-
+    public String index() {
         return "index";
     }
-
-
-
 
     @RequestMapping("/selectByCourseName")
     public List<Map<String, Object>> selectByCourseName(String courseName) {
@@ -86,7 +93,6 @@ public class CourseController {
         List<Map<String, Object>> resultList = courseService.selectByCourseName(map);
         return resultList;
     }
-
 
     @RequestMapping("/transaction")
     @Transactional
