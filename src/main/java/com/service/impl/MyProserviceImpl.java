@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class MyProserviceImpl implements MyProService {
-    private int i=0;
     @Override
+
     @Async("asyncServiceExecutor")
     public RespData handle() {
+        log.info(Thread.currentThread().getName());
         return RespData.getSuccessResp();
     }
+
 
 
 
